@@ -18,9 +18,12 @@ import {
   Flame,
   Clock,
   LayoutGrid,
-  Trash2
+  Trash2,
+  X,
+  Home
 } from 'lucide-react';
 import { translations, Language } from './translations';
+import PartyGame from './components/PartyGame';
 
 // --- Types ---
 interface Game {
@@ -36,25 +39,26 @@ interface Game {
 
 // --- Mock Data ---
 const ALL_IQ_QUESTIONS = [
-  { q: "Was ist das nächste Element: 2, 4, 8, 16, ...?", options: ["32", "24", "18", "64"], a: "32" },
-  { q: "Wenn alle A auch B sind und einige B auch C sind, sind dann einige A auch C?", options: ["Ja", "Nein", "Bestimmbar"], a: "Bestimmbar" },
-  { q: "Welche Zahl passt nicht in die Reihe? 3, 5, 7, 9, 11, 13", options: ["3", "7", "9", "11"], a: "9" },
-  { q: "Ein Schläger und ein Ball kosten zusammen 1.10$. Der Schläger kostet 1.00$ mehr als der Ball. Wie viel kostet der Ball?", options: ["0.10$", "0.05$", "0.15$", "1.00$"], a: "0.05$" },
-  { q: "Wenn 5 Maschinen in 5 Minuten 5 Teile herstellen, wie lange brauchen 100 Maschinen für 100 Teile?", options: ["100 Minuten", "50 Minuten", "5 Minuten", "1 Minute"], a: "5 Minuten" },
-  { q: "Welches Wort passt nicht zu den anderen?", options: ["Apfel", "Banane", "Karotte", "Mango"], a: "Karotte" },
-  { q: "Ein See ist mit Seerosen bedeckt. Jeden Tag verdoppelt sich die Fläche. Es dauert 48 Tage, bis der See voll ist. Wann war er halb voll?", options: ["Tag 24", "Tag 47", "Tag 26", "Tag 46"], a: "Tag 47" },
-  { q: "Wenn du von 100 immer wieder 7 abziehst, was ist die kleinste positive Zahl, die du erreichst?", options: ["1", "2", "3", "4"], a: "2" },
-  { q: "Welcher Tag ist der Tag nach dem Tag vor gestern, wenn morgen Sonntag ist?", options: ["Donnerstag", "Freitag", "Samstag", "Mittwoch"], a: "Freitag" },
-  { q: "Welche Zahl kommt als nächstes: 1, 1, 2, 3, 5, 8, 13, ...?", options: ["18", "21", "24", "15"], a: "21" },
-  { q: "Welches Wort bedeutet das Gegenteil von 'stets'?", options: ["Immer", "Oft", "Manchmal", "Nie"], a: "Nie" },
-  { q: "Ein Arzt gibt dir 3 Tabletten, du sollst jede halbe Stunde eine nehmen. Wie lange reichen sie?", options: ["1 Stunde", "1.5 Stunden", "2 Stunden", "3 Stunden"], a: "1 Stunde" },
-  { q: "Ein Quadrat hat wie viele Symmetrieachsen?", options: ["2", "4", "8", "Unendlich"], a: "4" },
-  { q: "Welche Form fügt sich logisch in diese Reihe ein: Dreieck, Viereck, Fünfeck, ...?", options: ["Kreis", "Sechseck", "Oval", "Achteck"], a: "Sechseck" },
-  { q: "Wie viele Monate haben 28 Tage?", options: ["1", "Alle 12", "Keiner", "6"], a: "Alle 12" },
-  { q: "Ein Vater ist 4 mal so alt wie sein Sohn. In 20 Jahren wird er doppelt so alt sein. Wie alt ist der Vater jetzt?", options: ["40", "32", "48", "60"], a: "40" }
+  { q: "Was ist das nächste Element: 2, 4, 8, 16, ...?", options: ["32", "24", "18", "64"], a: "32", img: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Wenn alle A auch B sind und einige B auch C sind, sind dann einige A auch C?", options: ["Ja", "Nein", "Bestimmbar"], a: "Bestimmbar", img: "https://images.unsplash.com/photo-1532622784046-b247b4e72a85?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Welche Zahl passt nicht in die Reihe? 3, 5, 7, 9, 11, 13", options: ["3", "7", "9", "11"], a: "9", img: "https://images.unsplash.com/photo-1549466827-023a1a1f9e98?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Ein Schläger und ein Ball kosten zusammen 1.10$. Der Schläger kostet 1.00$ mehr als der Ball. Wie viel kostet der Ball?", options: ["0.10$", "0.05$", "0.15$", "1.00$"], a: "0.05$", img: "https://images.unsplash.com/photo-1508344928928-7137b29de216?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Wenn 5 Maschinen in 5 Minuten 5 Teile herstellen, wie lange brauchen 100 Maschinen für 100 Teile?", options: ["100 Minuten", "50 Minuten", "5 Minuten", "1 Minute"], a: "5 Minuten", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Welches Wort passt nicht zu den anderen?", options: ["Apfel", "Banane", "Karotte", "Mango"], a: "Karotte", img: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Ein See ist mit Seerosen bedeckt. Jeden Tag verdoppelt sich die Fläche. Es dauert 48 Tage, bis der See voll ist. Wann war er halb voll?", options: ["Tag 24", "Tag 47", "Tag 26", "Tag 46"], a: "Tag 47", img: "https://images.unsplash.com/photo-1463130456064-96fe74ef43d3?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Wenn du von 100 immer wieder 7 abziehst, was ist die kleinste positive Zahl, die du erreichst?", options: ["1", "2", "3", "4"], a: "2", img: "https://images.unsplash.com/photo-1612440317336-da229ca2e4c8?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Welcher Tag ist der Tag nach dem Tag vor gestern, wenn morgen Sonntag ist?", options: ["Donnerstag", "Freitag", "Samstag", "Mittwoch"], a: "Freitag", img: "https://images.unsplash.com/photo-1506784951206-3827ec318e80?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Welche Zahl kommt als nächstes: 1, 1, 2, 3, 5, 8, 13, ...?", options: ["18", "21", "24", "15"], a: "21", img: "https://images.unsplash.com/photo-1518133835878-5a93cc3f89e5?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Welches Wort bedeutet das Gegenteil von 'stets'?", options: ["Immer", "Oft", "Manchmal", "Nie"], a: "Nie", img: "https://images.unsplash.com/photo-1495360010541-f48722b34f7d?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Ein Arzt gibt dir 3 Tabletten, du sollst jede halbe Stunde eine nehmen. Wie lange reichen sie?", options: ["1 Stunde", "1.5 Stunden", "2 Stunden", "3 Stunden"], a: "1 Stunde", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Ein Quadrat hat wie viele Symmetrieachsen?", options: ["2", "4", "8", "Unendlich"], a: "4", img: "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Welche Form fügt sich logisch in diese Reihe ein: Dreieck, Viereck, Fünfeck, ...?", options: ["Kreis", "Sechseck", "Oval", "Achteck"], a: "Sechseck", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Wie viele Monate haben 28 Tage?", options: ["1", "Alle 12", "Keiner", "6"], a: "Alle 12", img: "https://images.unsplash.com/photo-1584824486516-0555a07fc511?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Ein Vater ist 4 mal so alt wie sein Sohn. In 20 Jahren wird er doppelt so alt sein. Wie alt ist der Vater jetzt?", options: ["40", "32", "48", "60"], a: "40", img: "https://images.unsplash.com/photo-1506869640319-a1a19d192f15?auto=format&fit=crop&q=80&w=600&h=300" }
 ];
 
 const INITIAL_GAMES: Game[] = [
+  { id: 'party', title: 'Party Quiz (Online)', thumbnail: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&q=80&w=400&h=250', genre: 'party', difficulty: 'easy', isAI: false, isMultiplayer: true },
   { id: '1', title: 'Blitz Clicker', thumbnail: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=400&h=250', genre: 'speed', difficulty: 'easy', isAI: false, isMultiplayer: false },
   { id: '2', title: 'Neon Memory', thumbnail: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=400&h=250', genre: 'puzzle', difficulty: 'medium', isAI: true, isMultiplayer: false },
   { id: '7', title: 'Math Blitz', thumbnail: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400&h=250', genre: 'puzzle', difficulty: 'medium', isAI: false, isMultiplayer: false },
@@ -99,7 +103,7 @@ const Logo = ({ size = "md" }: { size?: "sm" | "md" | "lg" }) => {
 };
 
 const GameCard = ({ game, t, onClick, onDelete }: { game: Game, t: any, onClick: () => void, onDelete?: () => void, key?: string }) => {
-  const isPlayable = ['1', '2', '7', '8', 'iq'].includes(game.id) || game.isAI;
+  const isPlayable = ['1', '2', '7', '8', 'iq', 'party'].includes(game.id) || game.isAI;
 
   return (
     <div
@@ -153,7 +157,7 @@ const GameCard = ({ game, t, onClick, onDelete }: { game: Game, t: any, onClick:
         )}
         {game.isMultiplayer && (
           <div className="absolute top-2 left-2 bg-play-blue/80 backdrop-blur-md px-2 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider flex items-center gap-1">
-            <Users size={12} /> 1v1
+            <Users size={12} /> Online
           </div>
         )}
       </div>
@@ -196,6 +200,7 @@ export default function App() {
   const [useAiImage, setUseAiImage] = useState(true);
   const [isLangOpen, setIsLangOpen] = useState(false);
   const [generationError, setGenerationError] = useState(false);
+  const [footerModal, setFooterModal] = useState<'privacy' | 'terms' | 'support' | 'api' | null>(null);
 
   const t = translations[lang];
 
@@ -279,15 +284,15 @@ export default function App() {
 
     useEffect(() => {
       let timer: any;
-      if (isPlaying && timeLeft > 0) {
+      if (isPlaying && timeLeft > 0 && !['iq', 'party'].includes(game.id)) {
         timer = setInterval(() => {
           setTimeLeft(prev => prev - 1);
         }, 1000);
-      } else if (timeLeft === 0) {
+      } else if (timeLeft === 0 && !['iq', 'party'].includes(game.id)) {
         setIsPlaying(false);
       }
       return () => clearInterval(timer);
-    }, [isPlaying, timeLeft]);
+    }, [isPlaying, timeLeft, game.id]);
 
     useEffect(() => {
       let frame: number;
@@ -428,7 +433,7 @@ export default function App() {
 
     const startGame = () => {
       setScore(0);
-      setTimeLeft(game.id === '2' ? 60 : game.id === 'iq' ? -1 : 15);
+      setTimeLeft(game.id === '2' ? 60 : ['iq', 'party'].includes(game.id) ? -1 : 15);
       setIsPlaying(true);
       if (game.id === '1') spawnTarget();
       if (game.id === '2') initMemory();
@@ -497,9 +502,9 @@ export default function App() {
               />
             </div>
             
-            {!isPlaying && (timeLeft > 0 || game.id === 'iq') && (
+            {!isPlaying && (timeLeft > 0 || ['iq', 'party'].includes(game.id)) && (
               <div className="relative z-10 text-center">
-                {['1', '2', '7', '8', 'iq'].includes(game.id) || game.isAI ? (
+                {['1', '2', '7', '8', 'iq', 'party'].includes(game.id) || game.isAI ? (
                   <>
                     <button
                       onClick={startGame}
@@ -514,7 +519,8 @@ export default function App() {
                       {game.id === '7' && "Löse die Rechenaufgaben!"}
                       {game.id === '8' && "Klicke, sobald es grün wird!"}
                       {game.id === 'iq' && "Beantworte die Logikfragen!"}
-                      {game.isAI && !['1','2','7','8','iq'].includes(game.id) && "Fange die fallenden Objekte!"}
+                      {game.id === 'party' && "Erstelle eine Party und spiele live mit Freunden!"}
+                      {game.isAI && !['1','2','7','8','iq','party'].includes(game.id) && "Fange die fallenden Objekte!"}
                     </p>
                   </>
                 ) : (
@@ -533,9 +539,13 @@ export default function App() {
 
             {isPlaying && (
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                <div className="absolute top-4 left-4 text-2xl font-black text-play-blue">SCORE: {score}</div>
-                {game.id !== 'iq' && (
-                  <div className="absolute top-4 right-4 text-2xl font-black text-play-pink">TIME: {timeLeft}s</div>
+                {game.id !== 'party' && (
+                  <>
+                    <div className="absolute top-4 left-4 text-2xl font-black text-play-blue">SCORE: {score}</div>
+                    {game.id !== 'iq' && (
+                      <div className="absolute top-4 right-4 text-2xl font-black text-play-pink">TIME: {timeLeft}s</div>
+                    )}
+                  </>
                 )}
                 
                 {game.id === '1' && (
@@ -584,7 +594,7 @@ export default function App() {
                   </div>
                 )}
 
-                {game.isAI && !['1','2','7','8','worldfront'].includes(game.id) && (
+                {game.isAI && !['1','2','7','8','worldfront','iq','party'].includes(game.id) && (
                   <div className="absolute inset-0 overflow-hidden">
                     {fallingObjects.map(obj => (
                       <motion.div
@@ -626,21 +636,19 @@ export default function App() {
                     </div>
                   </div>
                 )}
+                {game.id === 'party' && (
+                  <PartyGame onExit={() => { setScore(0); setIsPlaying(false); onClose(); }} />
+                )}
+
                 {game.id === 'iq' && (
-                  <div className="w-full h-full flex flex-col items-center justify-center p-4 sm:p-8 text-center relative z-10 overflow-y-auto">
-                    <div className="mb-4 sm:mb-8 p-6 sm:p-8 bg-white/5 border border-white/10 rounded-3xl backdrop-blur-md shadow-2xl max-w-3xl w-full relative overflow-hidden group mt-4">
-                      <div className="absolute -inset-10 bg-play-blue/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 z-0"></div>
-                      
-                      <h3 className="text-xl sm:text-2xl lg:text-3xl font-black mb-2 text-white relative z-10 leading-relaxed">
+                  <div className="w-full h-full flex flex-col items-center justify-between p-4 sm:p-8 text-center relative z-10">
+                    <div className="w-full flex-grow flex flex-col items-center justify-center max-w-4xl px-2 sm:px-4">
+                      <h3 className="text-3xl sm:text-4xl lg:text-5xl font-black text-white leading-tight drop-shadow-2xl">
                         {currentIqQuestions[iqQuestionIdx]?.q}
                       </h3>
-                      
-                      <div className="mt-4 text-play-blue font-mono text-sm font-bold relative z-10">
-                        FRAGE {iqQuestionIdx + 1} VON {currentIqQuestions.length}
-                      </div>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 w-full max-w-3xl pb-10">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 w-full max-w-3xl pb-4 sm:pb-8">
                       {currentIqQuestions[iqQuestionIdx]?.options?.map((opt, i) => (
                         <button
                           key={i}
@@ -672,7 +680,7 @@ export default function App() {
               </div>
             )}
 
-            {timeLeft === 0 && (
+            {timeLeft === 0 && !['party'].includes(game.id) && (
               <div className="relative z-10 text-center">
                 <h3 className={`text-5xl font-black mb-4 ${game.id === 'iq' ? 'text-play-blue glow-blue' : 'text-blitz-yellow glow-yellow'}`}>
                   {game.id === 'iq' ? 'TEST BEENDET!' : 'GAME OVER!'}
@@ -1080,6 +1088,62 @@ export default function App() {
         <AnimatePresence>
           {selectedGame && <GameView game={selectedGame} onClose={() => setSelectedGame(null)} />}
         </AnimatePresence>
+
+        <AnimatePresence>
+          {footerModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm p-4"
+              onClick={() => setFooterModal(null)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 0.9, opacity: 0 }}
+                className="bg-[#0a0f1a] border border-white/10 p-8 rounded-3xl max-w-lg w-full relative shadow-2xl"
+                onClick={e => e.stopPropagation()}
+              >
+                <div className="absolute -inset-10 bg-play-blue/20 blur-3xl rounded-full opacity-50 z-0 pointer-events-none"></div>
+                <button 
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFooterModal(null);
+                  }}
+                  className="absolute top-4 right-4 text-white/50 hover:text-white bg-white/5 hover:bg-white/10 p-2 rounded-full transition-colors z-[60] cursor-pointer"
+                >
+                  <X size={20} className="pointer-events-none" />
+                </button>
+                <div className="relative z-10">
+                  <h2 className="text-2xl font-black mb-4 capitalize text-white">
+                    {footerModal === 'api' ? 'API Documentation' : footerModal}
+                  </h2>
+                  <div className="text-white/60 space-y-4">
+                    <p>
+                      {footerModal === 'privacy' && 'Hier findest du in Kürze alle Informationen zum Datenschutz. Wir verarbeiten deine Daten nur für die Bereitstellung des besten Spielerlebnisses.'}
+                      {footerModal === 'terms' && 'Unsere Nutzungsbedingungen werden aktuell überarbeitet. Es gilt: Spiel fair, hab Spaß und cheate nicht!'}
+                      {footerModal === 'support' && 'Brauchst du Hilfe? Unser Support-Team kümmert sich bald um all deine Anliegen. Feature Request? Bug gefunden? Sag uns Bescheid!'}
+                      {footerModal === 'api' && 'Die BlitzPlay Developer API befindet sich in der geschlossenen Beta. Bald kannst du deine eigenen Dienste anbinden!'}
+                    </p>
+                    <button 
+                      onClick={() => {
+                        setFooterModal(null);
+                        setPage('home');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                      }}
+                      className="mt-8 font-bold bg-play-blue/10 text-play-blue border border-play-blue/20 hover:bg-play-blue hover:text-black px-6 py-4 rounded-xl transition-all flex items-center gap-3 w-full justify-center group"
+                    >
+                      <Home size={18} className="group-hover:scale-110 transition-transform" /> 
+                      Zurück zur Startseite
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </main>
 
       {/* Footer */}
@@ -1087,10 +1151,10 @@ export default function App() {
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-8">
           <Logo size="sm" />
           <div className="flex gap-8 text-white/40 text-sm font-bold uppercase tracking-widest">
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-            <a href="#" className="hover:text-white transition-colors">Support</a>
-            <a href="#" className="hover:text-white transition-colors">API</a>
+            <button onClick={() => setFooterModal('privacy')} className="hover:text-white transition-colors">Privacy</button>
+            <button onClick={() => setFooterModal('terms')} className="hover:text-white transition-colors">Terms</button>
+            <button onClick={() => setFooterModal('support')} className="hover:text-white transition-colors">Support</button>
+            <button onClick={() => setFooterModal('api')} className="hover:text-white transition-colors">API</button>
           </div>
           <p className="text-white/20 text-xs">© 2026 BlitzPlay. All rights reserved.</p>
         </div>
