@@ -24,6 +24,7 @@ import {
 } from 'lucide-react';
 import { translations, Language } from './translations';
 import PartyGame from './components/PartyGame';
+import TowerDefenseGame from './components/TowerDefense';
 
 // --- Types ---
 interface Game {
@@ -54,7 +55,21 @@ const ALL_IQ_QUESTIONS = [
   { q: "Ein Quadrat hat wie viele Symmetrieachsen?", options: ["2", "4", "8", "Unendlich"], a: "4", img: "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?auto=format&fit=crop&q=80&w=600&h=300" },
   { q: "Welche Form fügt sich logisch in diese Reihe ein: Dreieck, Viereck, Fünfeck, ...?", options: ["Kreis", "Sechseck", "Oval", "Achteck"], a: "Sechseck", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=600&h=300" },
   { q: "Wie viele Monate haben 28 Tage?", options: ["1", "Alle 12", "Keiner", "6"], a: "Alle 12", img: "https://images.unsplash.com/photo-1584824486516-0555a07fc511?auto=format&fit=crop&q=80&w=600&h=300" },
-  { q: "Ein Vater ist 4 mal so alt wie sein Sohn. In 20 Jahren wird er doppelt so alt sein. Wie alt ist der Vater jetzt?", options: ["40", "32", "48", "60"], a: "40", img: "https://images.unsplash.com/photo-1506869640319-a1a19d192f15?auto=format&fit=crop&q=80&w=600&h=300" }
+  { q: "Ein Vater ist 4 mal so alt wie sein Sohn. In 20 Jahren wird er doppelt so alt sein. Wie alt ist der Vater jetzt?", options: ["40", "32", "48", "60"], a: "40", img: "https://images.unsplash.com/photo-1506869640319-a1a19d192f15?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Finde die fehlende Zahl: 2, 6, 12, 20, 30, ...?", options: ["42", "40", "38", "36"], a: "42", img: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Alle Hunde sind Tiere. Alle Tiere atmen. Atmen alle Hunde?", options: ["Ja", "Nein", "Bestimmbar"], a: "Ja", img: "https://images.unsplash.com/photo-1532622784046-b247b4e72a85?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Ein Bauer hat 17 Schafe. Alle bis auf 9 sterben. Wie viele Schafe hat der Bauer noch?", options: ["17", "9", "8", "0"], a: "9", img: "https://images.unsplash.com/photo-1518133835878-5a93cc3f89e5?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Du nimmst an einem Rennen teil. Du überholst den Zweiten. An welcher Position bist du jetzt?", options: ["Erster", "Zweiter", "Dritter", "Letzter"], a: "Zweiter", img: "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Was wird nass, wenn es trocknet?", options: ["Handtuch", "Wasser", "Sonne", "Wind"], a: "Handtuch", img: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Jeder in einer Gruppe von 5 Personen schüttelt jedem anderen genau einmal die Hand. Wie viele Händedrücke gibt es?", options: ["10", "15", "20", "25"], a: "10", img: "https://images.unsplash.com/photo-1584824486516-0555a07fc511?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Was gehört dir, wird aber von anderen mehr benutzt als von dir?", options: ["Geld", "Dein Name", "Auto", "Haus"], a: "Dein Name", img: "https://images.unsplash.com/photo-1612440317336-da229ca2e4c8?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Ein Mann hat 5 Töchter. Jede Tochter hat einen Bruder. Wie viele Kinder hat der Mann?", options: ["5", "6", "10", "11"], a: "6", img: "https://images.unsplash.com/photo-1463130456064-96fe74ef43d3?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Welches Tier passt nicht in die Reihe: Hai, Wal, Delfin, Orca?", options: ["Hai", "Wal", "Delfin", "Orca"], a: "Hai", img: "https://images.unsplash.com/photo-1506869640319-a1a19d192f15?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Eine Flasche und ein Korken kosten 1.10$. Die Flasche kostet 1.00$ mehr als der Korken. Wie viel kostet der Korken?", options: ["0.05$", "0.10$", "1.00$", "1.05$"], a: "0.05$", img: "https://images.unsplash.com/photo-1508344928928-7137b29de216?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Was hat Städte, aber keine Häuser; Wälder, aber keine Bäume; Wasser, aber keine Fische?", options: ["Karte", "Traum", "Buch", "Weltraum"], a: "Karte", img: "https://images.unsplash.com/photo-1532622784046-b247b4e72a85?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Ein Schneck kriecht einen 10 Meter tiefen Brunnen hoch. Am Tag schafft er 3 Meter, in der Nacht rutscht er 2 Meter ab. Wie viele Tage braucht er?", options: ["8", "10", "7", "9"], a: "8", img: "https://images.unsplash.com/photo-1549466827-023a1a1f9e98?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Wenn du ein Streichholz hast und in einen dunklen Raum mit einer Öllampe, einem Kamin und einer Kerze kommst, was zündest du zuerst an?", options: ["Kerze", "Kamin", "Öllampe", "Streichholz"], a: "Streichholz", img: "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?auto=format&fit=crop&q=80&w=600&h=300" },
+  { q: "Wie viele 9en gibt es zwischen 1 und 100?", options: ["10", "11", "19", "20"], a: "20", img: "https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?auto=format&fit=crop&q=80&w=600&h=300" }
 ];
 
 const INITIAL_GAMES: Game[] = [
@@ -63,6 +78,7 @@ const INITIAL_GAMES: Game[] = [
   { id: '2', title: 'Neon Memory', thumbnail: 'https://images.unsplash.com/photo-1614850523296-d8c1af93d400?auto=format&fit=crop&q=80&w=400&h=250', genre: 'puzzle', difficulty: 'medium', isAI: true, isMultiplayer: false },
   { id: '7', title: 'Math Blitz', thumbnail: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=400&h=250', genre: 'puzzle', difficulty: 'medium', isAI: false, isMultiplayer: false },
   { id: '8', title: 'Reaction Master', thumbnail: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?auto=format&fit=crop&q=80&w=400&h=250', genre: 'speed', difficulty: 'hard', isAI: false, isMultiplayer: true },
+  { id: '9', title: 'Tower Defense', thumbnail: 'https://images.unsplash.com/photo-1590502593747-42a996fd666b?auto=format&fit=crop&q=80&w=400&h=250', genre: 'battle', difficulty: 'medium', isAI: false, isMultiplayer: false },
   { id: 'iq', title: 'IQ Test', thumbnail: 'https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&q=80&w=400&h=250', genre: 'puzzle', difficulty: 'hard', isAI: true, isMultiplayer: false },
   { id: 'worldfront', title: 'WorldFront', thumbnail: 'https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=400&h=250', genre: 'battle', difficulty: 'hard', isAI: false, isMultiplayer: false },
 ];
@@ -103,7 +119,7 @@ const Logo = ({ size = "md" }: { size?: "sm" | "md" | "lg" }) => {
 };
 
 const GameCard = ({ game, t, onClick, onDelete }: { game: Game, t: any, onClick: () => void, onDelete?: () => void, key?: string }) => {
-  const isPlayable = ['1', '2', '7', '8', 'iq', 'party'].includes(game.id) || game.isAI;
+  const isPlayable = ['1', '2', '7', '8', '9', 'iq', 'party'].includes(game.id) || game.isAI;
 
   return (
     <div
@@ -147,7 +163,7 @@ const GameCard = ({ game, t, onClick, onDelete }: { game: Game, t: any, onClick:
             <Cpu size={12} /> AI
           </div>
         )}
-        {game.isAI && onDelete && !['1', '2', '7', '8', 'worldfront', 'iq'].includes(game.id) && (
+        {game.isAI && onDelete && !['1', '2', '7', '8', '9', 'worldfront', 'iq'].includes(game.id) && (
           <button 
             onClick={(e) => { e.stopPropagation(); onDelete(); }}
             className="absolute top-2 right-2 bg-red-500/80 hover:bg-red-500 backdrop-blur-md p-1.5 rounded-md text-white transition-colors z-10"
@@ -278,18 +294,19 @@ export default function App() {
 
     // IQ Game State
     const [iqQuestionIdx, setIqQuestionIdx] = useState(0);
-    const [currentIqQuestions, setCurrentIqQuestions] = useState(ALL_IQ_QUESTIONS.slice(0, 8));
+    const [currentIqQuestions, setCurrentIqQuestions] = useState(ALL_IQ_QUESTIONS.slice(0, 15));
+    const [usedIqQuestions, setUsedIqQuestions] = useState<string[]>([]);
 
     // AI Game State
     const [fallingObjects, setFallingObjects] = useState<{id: number, x: number, y: number, emoji: string}[]>([]);
 
     useEffect(() => {
       let timer: any;
-      if (isPlaying && timeLeft > 0 && !['iq', 'party'].includes(game.id)) {
+      if (isPlaying && timeLeft > 0 && !['iq', 'party', '9'].includes(game.id)) {
         timer = setInterval(() => {
           setTimeLeft(prev => prev - 1);
         }, 1000);
-      } else if (timeLeft === 0 && !['iq', 'party'].includes(game.id)) {
+      } else if (timeLeft === 0 && !['iq', 'party', '9'].includes(game.id)) {
         setIsPlaying(false);
       }
       return () => clearInterval(timer);
@@ -439,7 +456,7 @@ export default function App() {
 
     const startGame = () => {
       setScore(0);
-      setTimeLeft(game.id === '2' ? 60 : ['iq', 'party', '8'].includes(game.id) ? -1 : 15);
+      setTimeLeft(game.id === '2' ? 60 : ['iq', 'party', '8', '9'].includes(game.id) ? -1 : 15);
       setIsPlaying(true);
       if (game.id === '1') spawnTarget();
       if (game.id === '2') initMemory();
@@ -449,8 +466,14 @@ export default function App() {
         setReactionTime(0);
       }
       if (game.id === 'iq') {
-        const shuffled = [...ALL_IQ_QUESTIONS].sort(() => 0.5 - Math.random()).slice(0, 8);
+        let availableQs = ALL_IQ_QUESTIONS.filter(q => !usedIqQuestions.includes(q.q));
+        if (availableQs.length < 15) {
+          setUsedIqQuestions([]);
+          availableQs = [...ALL_IQ_QUESTIONS];
+        }
+        const shuffled = availableQs.sort(() => 0.5 - Math.random()).slice(0, 15);
         setCurrentIqQuestions(shuffled);
+        setUsedIqQuestions(prev => [...prev, ...shuffled.map(q => q.q)]);
         setIqQuestionIdx(0);
       }
     };
@@ -508,9 +531,9 @@ export default function App() {
               />
             </div>
             
-            {!isPlaying && (timeLeft > 0 || ['iq', 'party', '8'].includes(game.id)) && (
+            {!isPlaying && (timeLeft > 0 || ['iq', 'party', '8', '9'].includes(game.id)) && (
               <div className="relative z-10 text-center">
-                {['1', '2', '7', '8', 'iq', 'party'].includes(game.id) || game.isAI ? (
+                {['1', '2', '7', '8', '9', 'iq', 'party'].includes(game.id) || game.isAI ? (
                   <>
                     <button
                       onClick={startGame}
@@ -524,9 +547,10 @@ export default function App() {
                       {game.id === '2' && "Finde alle Paare!"}
                       {game.id === '7' && "Löse die Rechenaufgaben!"}
                       {game.id === '8' && "Klicke, sobald es grün wird!"}
+                      {game.id === '9' && "Verteidige deine Basis vor Feinden!"}
                       {game.id === 'iq' && "Beantworte die Logikfragen!"}
                       {game.id === 'party' && "Erstelle eine Party und spiele live mit Freunden!"}
-                      {game.isAI && !['1','2','7','8','iq','party'].includes(game.id) && "Fange die fallenden Objekte!"}
+                      {game.isAI && !['1','2','7','8','9','iq','party'].includes(game.id) && "Fange die fallenden Objekte!"}
                     </p>
                   </>
                 ) : (
@@ -545,7 +569,7 @@ export default function App() {
 
             {isPlaying && (
               <div className="absolute inset-0 flex flex-col items-center justify-center">
-                {game.id !== 'party' && game.id !== '8' && (
+                {game.id !== 'party' && game.id !== '8' && game.id !== '9' && (
                   <>
                     <div className="absolute top-4 left-4 text-2xl font-black text-play-blue">SCORE: {score}</div>
                     {game.id !== 'iq' && (
@@ -600,7 +624,7 @@ export default function App() {
                   </div>
                 )}
 
-                {game.isAI && !['1','2','7','8','worldfront','iq','party'].includes(game.id) && (
+                {game.isAI && !['1','2','7','8','9','worldfront','iq','party'].includes(game.id) && (
                   <div className="absolute inset-0 overflow-hidden">
                     {fallingObjects.map(obj => (
                       <motion.div
@@ -641,6 +665,9 @@ export default function App() {
                       )}
                     </div>
                   </div>
+                )}
+                {game.id === '9' && (
+                  <TowerDefenseGame onExit={() => { setScore(0); setIsPlaying(false); onClose(); }} t={t} />
                 )}
                 {game.id === 'party' && (
                   <PartyGame onExit={() => { setScore(0); setIsPlaying(false); onClose(); }} t={t} />
@@ -686,7 +713,7 @@ export default function App() {
               </div>
             )}
 
-            {timeLeft === 0 && !['party', '8'].includes(game.id) && (
+            {timeLeft === 0 && !['party', '8', '9'].includes(game.id) && (
               <div className="relative z-10 text-center">
                 <h3 className={`text-5xl font-black mb-4 ${game.id === 'iq' ? 'text-play-blue glow-blue' : 'text-blitz-yellow glow-yellow'}`}>
                   {game.id === 'iq' ? t.testEnded : t.gameOver}
