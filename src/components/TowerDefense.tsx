@@ -439,8 +439,8 @@ export default function TowerDefenseGame({ onExit, t }: { onExit: () => void, t:
       <div className="relative border border-white/10 shadow-[0_0_50px_rgba(0,0,0,0.8)] rounded-b-2xl overflow-hidden group">
         {/* Background Image */}
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-30 pointer-events-none" 
-          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?auto=format&fit=crop&q=80&w=800&h=400')` }}
+          className="absolute inset-0 bg-cover bg-center opacity-40 pointer-events-none" 
+          style={{ backgroundImage: `url('https://images.unsplash.com/photo-1533227260814-ce361bd4eb7c?auto=format&fit=crop&q=80&w=800&h=400')` }}
         />
         <canvas 
           ref={canvasRef}
